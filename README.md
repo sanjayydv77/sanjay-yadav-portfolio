@@ -7,7 +7,6 @@ A personal portfolio website featuring a unique 3D carousel navigation and a dyn
 ---
 
 ![3D Portfolio Demo](https://user-images.githubusercontent.com/your-id/your-image.gif)
-*(**Note:** I highly recommend you record a short GIF of your screen showing the 3D carousel rotating and upload it to GitHub to place here.)*
 
 ## ✨ Features
 
