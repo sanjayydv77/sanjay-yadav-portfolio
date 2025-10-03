@@ -1,0 +1,580 @@
+/* --- Google Fonts & Basic Setup --- */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap');
+
+/* --- UNIVERSAL COLOR VARIABLES --- */
+:root {
+  --background-color: #0a192f;
+  --panel-color: #112240;
+  --text-primary: #ccd6f6;
+  --text-secondary: #8892b0;
+  --accent-color: #64ffda;
+  --accent-color-darker: #13b192;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-primary);
+    overflow: hidden;
+}
+
+#matrix-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+/* --- Navigation Bar --- */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 5%;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    text-decoration: none;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+}
+
+.nav-links li {
+    margin-left: 2rem;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-primary);
+    font-size: 1.6rem;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: var(--accent-color);
+}
+
+/* --- 3D Scene & Carousel Setup --- */
+.scene-container {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    perspective: 2000px;
+}
+
+.carousel {
+    width: 90vw;
+    height: 25vh;
+    max-width: 1200px;
+    min-height: 580px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.carousel-panel {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: var(--panel-color);
+    border: 1px solid rgba(100, 255, 218, 0.2);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    gap: 2rem;
+    backface-visibility: hidden;
+}
+
+/* --- Positioning for all 5 panels in a perfect pentagon --- */
+.panel-home { transform: rotateY(0deg) translateZ(826px); }
+.panel-about { transform: rotateY(72deg) translateZ(826px); }
+.panel-skills { transform: rotateY(144deg) translateZ(826px); }
+.panel-projects { transform: rotateY(216deg) translateZ(826px); }
+.panel-contact { transform: rotateY(288deg) translateZ(826px); }
+
+
+/* --- Hero Section Styling --- */
+.hero-content {
+    flex-basis: 50%;
+}
+.hero-content h3 {
+    font-size: clamp(1.8rem, 3vw, 2.8rem);
+    font-weight: 400;
+    color: var(--text-secondary);
+}
+.hero-content h1 {
+    font-size: clamp(4rem, 8vw, 7.5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin: 1rem 0;
+    background: linear-gradient(90deg, var(--accent-color), var(--accent-color-darker));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow:
+        2px 2px 5px rgba(0,0,0,0.3),
+        -1px -1px 2px rgba(100, 255, 218, 0.1);
+}
+.hero-content .quote {
+    font-size: clamp(1.2rem, 2vw, 1.4rem);
+    color: var(--text-secondary);
+    font-style: italic;
+    margin-top: 2rem;
+}
+.social-media {
+    margin: 2.5rem 0;
+}
+.social-media a {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 4rem;
+    height: 4rem;
+    border: 1px solid var(--text-secondary);
+    border-radius: 50%;
+    font-size: 2rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    margin-right: 1rem;
+    transition: all 0.3s ease;
+}
+.social-media a:hover {
+    transform: scale(1.1);
+}
+.btn {
+    display: inline-block;
+    padding: 1.2rem 2.8rem;
+    background: transparent;
+    color: var(--accent-color);
+    border: 1px solid var(--accent-color);
+    border-radius: 5px;
+    font-size: 1.6rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+.btn:hover {
+    background: rgba(100, 255, 218, 0.1);
+}
+.hero-image-container {
+    flex-basis: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.hero-image-container img {
+    max-width: 90%;
+    border-radius: 10px;
+}
+
+/* --- About Section Styling --- */
+.about-image {
+    flex-basis: 40%;
+}
+.about-image img {
+    width: 100%;
+    max-w: 350px;
+    border-radius: 10px;
+}
+.about-content {
+    flex-basis: 60%;
+}
+.heading {
+    font-size: clamp(3rem, 5vw, 4.5rem);
+    font-weight: 700;
+    margin-bottom: 2rem;
+    color: var(--text-primary);
+    width: 100%;
+    text-align: center;
+}
+.heading span {
+    color: var(--accent-color);
+}
+.about-content p {
+    font-size: clamp(1.4rem, 2.5vw, 1.6rem);
+    line-height: 1.7;
+    color: var(--text-primary);
+    margin-bottom: 3rem;
+}
+
+/* --- Skills Section Styling --- */
+.skills-content {
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2rem;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+}
+.skill-card {
+    background: var(--background-color);
+    border: 1px solid rgba(100, 255, 218, 0.2);
+    border-radius: 10px;
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+.skill-card:hover {
+    transform: translateY(-10px);
+    background: var(--panel-color);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), 0 0 15px var(--accent-color);
+}
+.skill-card i {
+    font-size: 5rem;
+    margin-bottom: 1rem;
+    transition: transform 0.3s ease;
+}
+
+/* --- Modal Styling --- */
+.modal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+.modal-container.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+.modal-content {
+    background: var(--panel-color);
+    padding: 40px;
+    border-radius: 10px;
+    max-width: 900px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    border: 1px solid rgba(100, 255, 218, 0.2);
+}
+
+/* --- Project Panel & 3D Flip Card Styling --- */
+.panel-projects {
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 40px 0;
+    overflow: hidden;
+}
+
+.panel-projects .projects-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+@keyframes scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+
+.panel-projects .projects-conveyor {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    perspective: 1500px;
+    overflow: visible; 
+}
+
+.panel-projects .conveyor-track {
+    display: flex;
+    width: calc(340px * 12 + 2rem * 12);
+    animation: scroll 40s linear infinite;
+}
+
+.panel-projects:hover .conveyor-track {
+    animation-play-state: paused;
+}
+
+.panel-projects .project-card {
+    flex-shrink: 0;
+    width: 340px;
+    height: 350px;
+    margin: 0 1rem;
+    position: relative;
+    transition: transform 0.6s ease-in-out, height 0.6s ease-in-out;
+    transform-style: preserve-3d;
+    cursor: pointer;
+    will-change: transform, height;
+}
+
+.panel-projects .project-card:hover {
+    height: 420px; 
+    transform: rotateY(180deg) scale(1.05) translateZ(5px);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    z-index: 10;
+}
+
+.panel-projects .project-card-front,
+.panel-projects .project-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid rgba(100, 255, 218, 0.2);
+    transform: translateZ(1px); 
+}
+
+.panel-projects .project-card-front {
+    background-color: var(--panel-color); 
+}
+
+.panel-projects .project-card-front img {
+    width: 100%;
+    height: 60%; 
+    object-fit: cover;
+    object-position: top;
+}
+
+.panel-projects .project-card-front h3 {
+    font-size: 1.8rem;
+    color: var(--text-primary);
+    text-align: center;
+    padding: 1rem;
+    margin: auto 0;
+    line-height: 1.2;
+}
+
+.panel-projects .project-links {
+    background: none; 
+    width: 100%;
+    padding: 1rem;
+    margin-top: auto;
+    display: flex;
+    gap: 2.5rem; 
+    justify-content: center;
+    align-items: center;
+}
+
+.panel-projects .project-links i {
+    font-size: 2.8rem; 
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
+}
+
+.panel-projects .project-links i:hover {
+    color: var(--accent-color);
+    transform: scale(1.1); 
+}
+
+.panel-projects .project-card-back {
+    background-color: var(--panel-color);
+    color: var(--text-primary);
+    transform: rotateY(180deg);
+    padding: 1.5rem;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: center;
+}
+
+.panel-projects .card-back-content {
+    overflow-y: auto;
+    width: 100%;
+    height: 100%;
+    padding: 0 0.5rem;
+    
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    
+    will-change: scroll-position;
+}
+.panel-projects .card-back-content::-webkit-scrollbar {
+    display: none;
+}
+
+
+.panel-projects .project-card-back h4 {
+    font-size: 2rem;
+    margin-bottom: 0.8rem;
+    color: var(--accent-color);
+}
+
+.panel-projects .project-card-back p {
+    font-size: 1.4rem;
+    line-height: 1.4;
+    margin-bottom: 0.8rem;
+}
+
+.panel-projects .project-card-back .tech-used {
+    font-size: 1.2rem;
+    font-style: italic;
+    opacity: 0.8;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+.panel-projects .card-back-content .project-links {
+    margin-top: 1rem;
+}
+/* --- New Contact Section Styling --- */
+
+.panel-contact {
+    flex-direction: column;
+    justify-content: center;
+}
+
+.contact-container {
+    width: 100%;
+    max-width: 850px;
+    margin: 0 auto;
+}
+
+.contact-container .heading {
+    margin-bottom: 2rem;
+}
+
+.contact-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem; /* Sets the space between rows */
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem; /* Sets the space between inputs in a row */
+}
+
+/* Common styling for all input fields and the textarea */
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    background: transparent;
+    border: 2px solid var(--text-secondary); /* Border color from your theme */
+    border-radius: 0.5rem;
+    padding: 1rem;
+    font-size: 1.6rem;
+    color: var(--text-primary);
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+/* Styling for the placeholder text e.g., "Full name" */
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+    color: var(--text-secondary);
+}
+
+/* Highlight effect when you click on an input field */
+.contact-form input:focus,
+.contact-form textarea:focus {
+    border-color: var(--accent-color);
+}
+
+/* Specific styling for the message box */
+.contact-form textarea {
+    height: 140px;
+    resize: none;
+}
+
+/* Make the button full-width */
+.contact-form .btn {
+    width: 100%;
+    margin-top: 1rem;
+}
+/* --- Success Pop-up Modal Styling --- */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1001; /* Make sure it's on top */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    /* Hidden by default */
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-overlay .modal-content {
+    background-color: var(--panel-color);
+    padding: 3rem;
+    border-radius: 1rem;
+    border: 2px solid var(--accent-color);
+    text-align: center;
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.active .modal-content {
+    transform: scale(1);
+}
+
+.modal-content i {
+    font-size: 6rem;
+    color: var(--accent-color);
+}
+
+.modal-content h2 {
+    color: var(--text-primary);
+    font-size: 2.5rem;
+    margin: 1rem 0;
+}
+
+.modal-content p {
+    color: var(--text-secondary);
+    font-size: 1.6rem;
+    margin-bottom: 2rem;
+}
+
+.modal-content .btn {
+    width: 100%;
+}
