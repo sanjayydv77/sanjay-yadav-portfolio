@@ -397,9 +397,8 @@ body {
     flex-direction: column;
     justify-content: flex-start;
     padding: 40px 0;
-    /* --- THE ONLY CHANGE IS HERE --- */
-    overflow-y: visible; /* Allows icons to pop out vertically */
-    overflow-x: hidden; /* Keeps the conveyor belt contained horizontally */
+    overflow-y: visible; 
+    overflow-x: hidden; 
 }
 
 .panel-projects .projects-content {
@@ -587,4 +586,16 @@ body {
 .panel-projects .project-card a:hover i {
     color: var(--accent-color);
     transform: scale(1.2) translateZ(0);
+}
+
+/* --- NEW: Hide Scrollbar on Project Panel --- */
+.panel-projects {
+    /* These two lines hide the scrollbar in Firefox/IE */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+/* This line hides the scrollbar in Chrome, Safari, and Edge */
+.panel-projects::-webkit-scrollbar {
+    display: none;
 }
