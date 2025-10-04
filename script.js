@@ -8,9 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'home': 0, 'about': 72, 'skills': 144, 'projects': 216, 'contact': 288
     };
     const homePanel = document.querySelector('.panel-home');
-    if (homePanel) {
-        homePanel.classList.add('active-panel');
-    }
+    if (homePanel) homePanel.classList.add('active-panel');
     navLinks.forEach(link => {
         link.addEventListener('click', (event) => {
             event.preventDefault();
@@ -18,78 +16,71 @@ document.addEventListener('DOMContentLoaded', () => {
             if (panelRotations.hasOwnProperty(target)) {
                 const rotation = panelRotations[target];
                 carousel.style.transform = `rotateY(-${rotation}deg)`;
-                panels.forEach(panel => {
-                    panel.classList.remove('active-panel');
-                });
+                panels.forEach(panel => panel.classList.remove('active-panel'));
                 const targetPanel = document.querySelector(`.panel-${target}`);
-                if (targetPanel) {
-                    targetPanel.classList.add('active-panel');
-                }
+                if (targetPanel) targetPanel.classList.add('active-panel');
             }
         });
     });
     const modalContainer = document.getElementById('about-modal');
     const readMoreBtn = document.getElementById('read-more-btn');
     const closeBtn = document.querySelector('.close-btn');
-    if (readMoreBtn && modalContainer) {
-        readMoreBtn.addEventListener('click', (event) => {
-            event.preventDefault();
-            modalContainer.classList.add('active');
-        });
-    }
-    function closeModal() {
-        if (modalContainer) {
-            modalContainer.classList.remove('active');
-        }
-    }
-    if (closeBtn) {
-        closeBtn.addEventListener('click', closeModal);
-    }
-    if (modalContainer) {
-        modalContainer.addEventListener('click', (event) => {
-            if (event.target === modalContainer) {
-                closeModal();
-            }
-        });
-    }
+    if (readMoreBtn && modalContainer) { readMoreBtn.addEventListener('click', (event) => { event.preventDefault(); modalContainer.classList.add('active'); }); }
+    function closeModal() { if (modalContainer) modalContainer.classList.remove('active'); }
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    if (modalContainer) modalContainer.addEventListener('click', (event) => { if (event.target === modalContainer) closeModal(); });
 
-    // --- UPDATED: Performance-Tuned Project Card Logic ---
+    // --- Advanced Pop-up Icon & Smart Hover Logic ---
     const projectCards = document.querySelectorAll('.project-card');
-    let leaveTimeout; // Use a single, shared timeout variable.
+    const linksPopup = document.getElementById('project-links-popup');
+    let cardLeaveTimeout;
+    let popupLeaveTimeout;
 
-    projectCards.forEach(card => {
-        const cardBack = card.querySelector('.project-card-back');
+    if (linksPopup && projectCards.length > 0) {
+        projectCards.forEach(card => {
+            const linksSource = card.querySelector('.project-links');
+            if (!linksSource) return;
 
-        card.addEventListener('mouseenter', () => {
-            // Cancel any pending action to close a different card.
-            clearTimeout(leaveTimeout);
+            card.addEventListener('mouseenter', () => {
+                clearTimeout(cardLeaveTimeout);
+                clearTimeout(popupLeaveTimeout);
 
-            // Instantly un-flip any other card that might still be open.
-            projectCards.forEach(otherCard => {
-                if (otherCard !== card) {
-                    otherCard.classList.remove('is-flipped');
-                }
+                projectCards.forEach(c => { if (c !== card) c.classList.remove('is-flipped'); });
+                card.classList.add('is-flipped');
+
+                linksPopup.innerHTML = linksSource.innerHTML;
+                const cardRect = card.getBoundingClientRect();
+                const popupTop = cardRect.bottom + 15;
+                const popupLeft = cardRect.left + (cardRect.width / 2);
+                linksPopup.style.top = `${popupTop}px`;
+                linksPopup.style.left = `${popupLeft}px`;
+                linksPopup.classList.add('active');
             });
 
-            // Flip the current card.
-            card.classList.add('is-flipped');
+            card.addEventListener('mouseleave', () => {
+                cardLeaveTimeout = setTimeout(() => {
+                    card.classList.remove('is-flipped');
+                    linksPopup.classList.remove('active');
+                }, 300);
+            });
+
+            const cardBack = card.querySelector('.project-card-back');
+            if (cardBack) { cardBack.addEventListener('mouseenter', () => { clearTimeout(cardLeaveTimeout); }); }
         });
 
-        card.addEventListener('mouseleave', () => {
-            // When leaving, set a timer to un-flip this card.
-            leaveTimeout = setTimeout(() => {
-                card.classList.remove('is-flipped');
+        linksPopup.addEventListener('mouseenter', () => {
+            clearTimeout(cardLeaveTimeout);
+            clearTimeout(popupLeaveTimeout);
+        });
+
+        linksPopup.addEventListener('mouseleave', () => {
+            popupLeaveTimeout = setTimeout(() => {
+                linksPopup.classList.remove('active');
+                // Also un-flip any card that might be stuck in the flipped state
+                projectCards.forEach(c => c.classList.remove('is-flipped'));
             }, 300);
         });
-
-        // If the mouse enters the back content to scroll, cancel the un-flip timer.
-        if (cardBack) {
-            cardBack.addEventListener('mouseenter', () => {
-                clearTimeout(leaveTimeout);
-            });
-        }
-    });
-
+    }
 
     // --- Part 2: Interactive Starfield Background ---
     const canvas = document.getElementById('matrix-canvas');
@@ -114,10 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const starfield = new THREE.Points(starGeometry, starMaterial);
         scene.add(starfield);
         const mouse = new THREE.Vector2();
-        window.addEventListener('mousemove', (event) => {
-            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-        });
+        window.addEventListener('mousemove', (event) => { mouse.x = (event.clientX / window.innerWidth) * 2 - 1; mouse.y = -(event.clientY / window.innerHeight) * 2 + 1; });
         const clock = new THREE.Clock();
         function animate() {
             requestAnimationFrame(animate);
@@ -146,41 +134,22 @@ document.addEventListener('DOMContentLoaded', () => {
             const email = contactForm.querySelector('[name="email"]').value.trim();
             const subject = contactForm.querySelector('[name="subject"]').value.trim();
             const message = contactForm.querySelector('[name="message"]').value.trim();
-            if (!name || !email || !subject || !message) {
-                alert('Please fill out all required fields.');
-                return;
-            }
+            if (!name || !email || !subject || !message) { alert('Please fill out all required fields.'); return; }
             const formData = new FormData(contactForm);
             const formAction = contactForm.getAttribute('action');
-            fetch(formAction, {
-                method: 'POST',
-                body: formData,
-                headers: { 'Accept': 'application/json' }
-            })
+            fetch(formAction, { method: 'POST', body: formData, headers: { 'Accept': 'application/json' } })
             .then(response => {
                 if (response.ok) {
                     successModal.classList.add('active');
                     contactForm.reset();
                 } else {
-                    response.json().then(data => {
-                        console.error('Form submission error:', data);
-                        alert('There was a problem with the server. Please try again.');
-                    });
+                    response.json().then(data => { console.error('Form submission error:', data); alert('There was a problem with the server. Please try again.'); });
                 }
             })
-            .catch(error => {
-                console.error('Network Error:', error);
-                alert('Could not send message due to a network error.');
-            });
+            .catch(error => { console.error('Network Error:', error); alert('Could not send message due to a network error.'); });
         });
-        const closeTheModal = () => {
-            successModal.classList.remove('active');
-        };
+        const closeTheModal = () => { successModal.classList.remove('active'); };
         closeModalBtn.addEventListener('click', closeTheModal);
-        successModal.addEventListener('click', (event) => {
-            if (event.target === successModal) {
-                closeTheModal();
-            }
-        });
+        successModal.addEventListener('click', (event) => { if (event.target === successModal) closeTheModal(); });
     }
 });
