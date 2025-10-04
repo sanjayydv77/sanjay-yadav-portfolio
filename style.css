@@ -5,9 +5,11 @@
 :root {
   --background-color: #0a192f;
   --panel-color: #112240;
+  --panel-rgb: 17, 34, 64;
   --text-primary: #ccd6f6;
   --text-secondary: #8892b0;
   --accent-color: #64ffda;
+  --accent-rgb: 100, 255, 218;
   --accent-color-darker: #13b192;
 }
 
@@ -107,7 +109,7 @@ body {
     backface-visibility: hidden;
 }
 
-/* --- Positioning for all 5 panels in a perfect pentagon --- */
+/* --- Positioning for all 5 panels --- */
 .panel-home { transform: rotateY(0deg) translateZ(826px); }
 .panel-about { transform: rotateY(72deg) translateZ(826px); }
 .panel-skills { transform: rotateY(144deg) translateZ(826px); }
@@ -254,7 +256,7 @@ body {
     transition: transform 0.3s ease;
 }
 
-/* --- Modal Styling --- */
+/* --- About Me Modal Styling --- */
 .modal-container {
     position: fixed;
     top: 0;
@@ -287,12 +289,117 @@ body {
     border: 1px solid rgba(100, 255, 218, 0.2);
 }
 
+/* --- New Contact Section Styling --- */
+.panel-contact {
+    flex-direction: column;
+    justify-content: center;
+}
+.contact-container {
+    width: 100%;
+    max-width: 850px;
+    margin: 0 auto;
+}
+.contact-container .heading {
+    margin-bottom: 2rem;
+}
+.contact-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+}
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    background: transparent;
+    border: 2px solid var(--text-secondary);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    font-size: 1.6rem;
+    color: var(--text-primary);
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+    color: var(--text-secondary);
+}
+.contact-form input:focus,
+.contact-form textarea:focus {
+    border-color: var(--accent-color);
+}
+.contact-form textarea {
+    height: 140px;
+    resize: none;
+}
+.contact-form .btn {
+    width: 100%;
+    margin-top: 1rem;
+}
+
+/* --- Success Pop-up Modal Styling --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+.modal-overlay .modal-content {
+    background-color: var(--panel-color);
+    padding: 3rem;
+    border-radius: 1rem;
+    border: 2px solid var(--accent-color);
+    text-align: center;
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+}
+.modal-overlay.active .modal-content {
+    transform: scale(1);
+}
+.modal-content i {
+    font-size: 6rem;
+    color: var(--accent-color);
+}
+.modal-content h2 {
+    color: var(--text-primary);
+    font-size: 2.5rem;
+    margin: 1rem 0;
+}
+.modal-content p {
+    color: var(--text-secondary);
+    font-size: 1.6rem;
+    margin-bottom: 2rem;
+}
+.modal-content .btn {
+    width: 100%;
+}
+
 /* --- Project Panel & 3D Flip Card Styling --- */
 .panel-projects {
     flex-direction: column;
     justify-content: flex-start;
     padding: 40px 0;
-    overflow: hidden;
+    /* --- THE ONLY CHANGE IS HERE --- */
+    overflow-y: visible; /* Allows icons to pop out vertically */
+    overflow-x: hidden; /* Keeps the conveyor belt contained horizontally */
 }
 
 .panel-projects .projects-content {
@@ -315,7 +422,8 @@ body {
     height: 100%;
     align-items: center;
     perspective: 1500px;
-    overflow: visible; 
+    padding-bottom: 70px; 
+    overflow: visible;
 }
 
 .panel-projects .conveyor-track {
@@ -334,17 +442,17 @@ body {
     height: 350px;
     margin: 0 1rem;
     position: relative;
-    transition: transform 0.6s ease-in-out, height 0.6s ease-in-out;
     transform-style: preserve-3d;
     cursor: pointer;
-    will-change: transform, height;
+    transition: transform 0.8s ease, box-shadow 0.8s ease, height 0.8s ease;
+    will-change: transform, height, box-shadow;
+    overflow: visible;
 }
 
-.panel-projects .project-card:hover {
+.panel-projects .project-card.is-flipped {
     height: 420px; 
-    transform: rotateY(180deg) scale(1.05) translateZ(5px);
-    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-    z-index: 10;
+    transform: translateY(-10px) rotateY(180deg);
+    box-shadow: 0 0 35px rgba(var(--accent-rgb), 0.5), 0 0 15px rgba(var(--accent-rgb), 0.3);
 }
 
 .panel-projects .project-card-front,
@@ -356,78 +464,100 @@ body {
     border-radius: 10px;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
-    border: 1px solid rgba(100, 255, 218, 0.2);
-    transform: translateZ(1px); 
+    border: 1px solid rgba(var(--accent-rgb), 0.1);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
 }
 
 .panel-projects .project-card-front {
-    background-color: var(--panel-color); 
+    justify-content: flex-end;
+}
+
+.panel-projects .project-card-front::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 70%;
+    background: linear-gradient(to top, rgba(var(--panel-rgb), 0.95), transparent);
+    z-index: 1;
 }
 
 .panel-projects .project-card-front img {
     width: 100%;
-    height: 60%; 
+    height: 100%;
     object-fit: cover;
-    object-position: top;
+    object-position: center;
 }
 
 .panel-projects .project-card-front h3 {
+    position: relative;
+    z-index: 2;
     font-size: 1.8rem;
     color: var(--text-primary);
     text-align: center;
-    padding: 1rem;
-    margin: auto 0;
+    padding: 1.5rem;
     line-height: 1.2;
 }
 
 .panel-projects .project-links {
-    background: none; 
-    width: 100%;
-    padding: 1rem;
-    margin-top: auto;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    z-index: 10;
+    opacity: 0;
+    pointer-events: none;
     display: flex;
-    gap: 2.5rem; 
-    justify-content: center;
-    align-items: center;
+    gap: 1.5rem;
+    padding: 0.8rem 2rem;
+    background: var(--panel-color);
+    border: 1px solid rgba(var(--accent-rgb), 0.2);
+    border-radius: 30px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+    transform: translateX(-50%) translateY(0);
+    transition: transform 0.4s ease-out 0.2s, opacity 0.4s ease-out 0.2s;
+}
+
+.panel-projects .project-card.is-flipped .project-links {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(calc(100% + 15px));
 }
 
 .panel-projects .project-links i {
     font-size: 2.8rem; 
     color: var(--text-secondary);
-    transition: all 0.3s ease;
 }
 
-.panel-projects .project-links i:hover {
+.panel-projects .project-links a:hover i {
     color: var(--accent-color);
-    transform: scale(1.1); 
+    transform: scale(1.2);
 }
 
 .panel-projects .project-card-back {
-    background-color: var(--panel-color);
-    color: var(--text-primary);
     transform: rotateY(180deg);
+    background: rgba(var(--panel-rgb), 0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(var(--accent-rgb), 0.2);
+    color: var(--text-primary);
     padding: 1.5rem;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
     text-align: center;
 }
 
 .panel-projects .card-back-content {
-    overflow-y: auto;
     width: 100%;
     height: 100%;
-    padding: 0 0.5rem;
-    
+    padding: 1rem 0.5rem;
+    overflow-y: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    
-    will-change: scroll-position;
 }
 .panel-projects .card-back-content::-webkit-scrollbar {
     display: none;
 }
-
 
 .panel-projects .project-card-back h4 {
     font-size: 2rem;
@@ -449,134 +579,12 @@ body {
     margin-bottom: 1rem;
 }
 
-.panel-projects .card-back-content .project-links {
-    margin-top: 1rem;
+/* Final Fix: Hover Effect for Card Icons */
+.panel-projects .project-card a i {
+    transform: translateZ(0);
+    transition: transform 0.3s ease, color 0.3s ease;
 }
-/* --- New Contact Section Styling --- */
-
-.panel-contact {
-    flex-direction: column;
-    justify-content: center;
-}
-
-.contact-container {
-    width: 100%;
-    max-width: 850px;
-    margin: 0 auto;
-}
-
-.contact-container .heading {
-    margin-bottom: 2rem;
-}
-
-.contact-form {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem; /* Sets the space between rows */
-}
-
-.form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.25rem; /* Sets the space between inputs in a row */
-}
-
-/* Common styling for all input fields and the textarea */
-.contact-form input,
-.contact-form textarea {
-    width: 100%;
-    background: transparent;
-    border: 2px solid var(--text-secondary); /* Border color from your theme */
-    border-radius: 0.5rem;
-    padding: 1rem;
-    font-size: 1.6rem;
-    color: var(--text-primary);
-    outline: none;
-    transition: border-color 0.3s ease;
-}
-
-/* Styling for the placeholder text e.g., "Full name" */
-.contact-form input::placeholder,
-.contact-form textarea::placeholder {
-    color: var(--text-secondary);
-}
-
-/* Highlight effect when you click on an input field */
-.contact-form input:focus,
-.contact-form textarea:focus {
-    border-color: var(--accent-color);
-}
-
-/* Specific styling for the message box */
-.contact-form textarea {
-    height: 140px;
-    resize: none;
-}
-
-/* Make the button full-width */
-.contact-form .btn {
-    width: 100%;
-    margin-top: 1rem;
-}
-/* --- Success Pop-up Modal Styling --- */
-
-/* --- Success Pop-up Modal Styling --- */
-
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    z-index: 1001; /* Make sure it's on top */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
-    /* Hidden by default */
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-}
-
-.modal-overlay.active {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-.modal-overlay .modal-content {
-    background-color: var(--panel-color);
-    padding: 3rem;
-    border-radius: 1rem;
-    border: 2px solid var(--accent-color);
-    text-align: center;
-    transform: scale(0.9);
-    transition: transform 0.3s ease;
-}
-
-.modal-overlay.active .modal-content {
-    transform: scale(1);
-}
-
-.modal-content i {
-    font-size: 6rem;
+.panel-projects .project-card a:hover i {
     color: var(--accent-color);
-}
-
-.modal-content h2 {
-    color: var(--text-primary);
-    font-size: 2.5rem;
-    margin: 1rem 0;
-}
-
-.modal-content p {
-    color: var(--text-secondary);
-    font-size: 1.6rem;
-    margin-bottom: 2rem;
-}
-
-.modal-content .btn {
-    width: 100%;
+    transform: scale(1.2) translateZ(0);
 }

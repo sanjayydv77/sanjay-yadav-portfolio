@@ -53,6 +53,44 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- UPDATED: Performance-Tuned Project Card Logic ---
+    const projectCards = document.querySelectorAll('.project-card');
+    let leaveTimeout; // Use a single, shared timeout variable.
+
+    projectCards.forEach(card => {
+        const cardBack = card.querySelector('.project-card-back');
+
+        card.addEventListener('mouseenter', () => {
+            // Cancel any pending action to close a different card.
+            clearTimeout(leaveTimeout);
+
+            // Instantly un-flip any other card that might still be open.
+            projectCards.forEach(otherCard => {
+                if (otherCard !== card) {
+                    otherCard.classList.remove('is-flipped');
+                }
+            });
+
+            // Flip the current card.
+            card.classList.add('is-flipped');
+        });
+
+        card.addEventListener('mouseleave', () => {
+            // When leaving, set a timer to un-flip this card.
+            leaveTimeout = setTimeout(() => {
+                card.classList.remove('is-flipped');
+            }, 300);
+        });
+
+        // If the mouse enters the back content to scroll, cancel the un-flip timer.
+        if (cardBack) {
+            cardBack.addEventListener('mouseenter', () => {
+                clearTimeout(leaveTimeout);
+            });
+        }
+    });
+
+
     // --- Part 2: Interactive Starfield Background ---
     const canvas = document.getElementById('matrix-canvas');
     if (typeof THREE !== 'undefined' && canvas) {
@@ -82,12 +120,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         const clock = new THREE.Clock();
         function animate() {
-            const elapsedTime = clock.getElapsedTime();
+            requestAnimationFrame(animate);
             starfield.rotation.y = mouse.x * 0.2;
             starfield.rotation.x = mouse.y * 0.2;
             starfield.rotation.z += 0.0005;
             renderer.render(scene, camera);
-            requestAnimationFrame(animate);
         }
         animate();
         window.addEventListener('resize', () => {
@@ -98,32 +135,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Part 3: Contact Form Functionality (Final Debugged Version) ---
+    // --- Part 3: Contact Form Functionality ---
     const contactForm = document.getElementById('contactForm');
     const successModal = document.getElementById('success-modal');
     const closeModalBtn = document.getElementById('close-modal-btn');
-
-    // This check ensures we only run the code if all three crucial elements exist.
     if (contactForm && successModal && closeModalBtn) {
-
         contactForm.addEventListener('submit', (event) => {
-            event.preventDefault(); // Stop the page from reloading
-
-            // A simpler, more direct validation check
+            event.preventDefault();
             const name = contactForm.querySelector('[name="name"]').value.trim();
             const email = contactForm.querySelector('[name="email"]').value.trim();
             const subject = contactForm.querySelector('[name="subject"]').value.trim();
             const message = contactForm.querySelector('[name="message"]').value.trim();
-
             if (!name || !email || !subject || !message) {
                 alert('Please fill out all required fields.');
-                return; // Stop the submission if validation fails
+                return;
             }
-
-            // If validation passes, send the form data
             const formData = new FormData(contactForm);
             const formAction = contactForm.getAttribute('action');
-
             fetch(formAction, {
                 method: 'POST',
                 body: formData,
@@ -131,11 +159,9 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .then(response => {
                 if (response.ok) {
-                    // On success, show the modal and reset the form
                     successModal.classList.add('active');
                     contactForm.reset();
                 } else {
-                    // Handle server errors from formsubmit.co
                     response.json().then(data => {
                         console.error('Form submission error:', data);
                         alert('There was a problem with the server. Please try again.');
@@ -143,21 +169,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             })
             .catch(error => {
-                // Handle network errors (e.g., no internet connection)
                 console.error('Network Error:', error);
                 alert('Could not send message due to a network error.');
             });
         });
-
-        // --- Logic to close the modal ---
         const closeTheModal = () => {
             successModal.classList.remove('active');
         };
-
-        // Close when the 'Close' button is clicked
         closeModalBtn.addEventListener('click', closeTheModal);
-
-        // Close when the dark background overlay is clicked
         successModal.addEventListener('click', (event) => {
             if (event.target === successModal) {
                 closeTheModal();
