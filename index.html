@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+< lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="style.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
-<body>
+<>
     <canvas id="matrix-canvas"></canvas>
 
     <nav class="navbar">
@@ -201,17 +201,32 @@
                 <div class="contact-container">
                     <h2 class="heading">CONTACT <span>ME</span></h2>
                     <form id="contactForm" class="contact-form" action="https://formsubmit.co/sanjuydv5357" method="POST">
-                        <div class="form-row">
-                            <input type="text" name="name" placeholder="Full name" required>
-                            <input type="email" name="email" placeholder="Email Address" required>
-                        </div>
-                        <div class="form-row">
-                            <input type="tel" name="phone" placeholder="Phone Number">
-                            <input type="text" name="subject" placeholder="Email Subject" required>
-                        </div>
-                        <textarea name="message" placeholder="Your Message" required></textarea>
-                        <button type="submit" class="btn">Send Message</button>
-                    </form>
+    <div class="form-row">
+        <div class="input-group">
+            <i class='bx bxs-user'></i>
+            <input type="text" name="name" placeholder="Full name" required>
+        </div>
+        <div class="input-group">
+            <i class='bx bxs-envelope'></i>
+            <input type="email" name="email" placeholder="Email Address" required>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="input-group">
+            <i class='bx bxs-phone'></i>
+            <input type="tel" name="phone" placeholder="Phone Number">
+        </div>
+        <div class="input-group">
+            <i class='bx bxs-pen'></i>
+            <input type="text" name="subject" placeholder="Email Subject" required>
+        </div>
+    </div>
+    <div class="input-group">
+        <i class='bx bxs-comment-detail'></i>
+        <textarea name="message" placeholder="Your Message" required></textarea>
+    </div>
+    <button type="submit" class="btn">Send Message</button>
+</form>
                 </div>
             </div>
         </div>
@@ -238,5 +253,6 @@
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="script.js"></script>
+
 </body>
 </html>

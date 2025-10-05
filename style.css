@@ -146,7 +146,7 @@ body {
     margin-top: 2rem;
 }
 .social-media {
-    margin: 2.5rem 0;
+    margin: 2rem 0;
 }
 .social-media a {
     display: inline-flex;
@@ -154,16 +154,59 @@ body {
     align-items: center;
     width: 4rem;
     height: 4rem;
-    border: 1px solid var(--text-secondary);
     border-radius: 50%;
     font-size: 2rem;
-    color: var(--text-secondary);
+    color: cyan;
     text-decoration: none;
-    margin-right: 1rem;
+    margin-right: 0.2rem;
     transition: all 0.3s ease;
 }
 .social-media a:hover {
     transform: scale(1.1);
+}
+
+/* This is the new hover effect */
+.social-media a:hover {
+    transform: translateY(-8px) scale(1.1); /* Lifts up and scales */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+/* --- Social Media Icon Brand Colors on Hover --- */
+
+/* LinkedIn */
+.social-media a.linkedin:hover {
+    background-color: #0A66C2;
+    border-color: #0A66C2;
+}
+.social-media a.linkedin:hover i {
+    color: #fff;
+}
+
+/* GitHub */
+.social-media a.github:hover {
+    background-color: #fff;
+    border-color: #fff;
+}
+.social-media a.github:hover i {
+    color: #171515; /* Dark color for the icon */
+}
+
+/* Gmail */
+.social-media a.gmail:hover {
+    background-color: #EA4335;
+    border-color: #EA4335;
+}
+.social-media a.gmail:hover i {
+    color: #fff;
+}
+
+/* Instagram */
+.social-media a.instagram:hover {
+    background: #d6249f;
+    background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#285AEB 90%);
+    border-color: transparent;
+}
+.social-media a.instagram:hover i {
+    color: #fff;
 }
 .btn {
     display: inline-block;
@@ -291,6 +334,7 @@ body {
 
 /* --- New Contact Section Styling --- */
 .panel-contact {
+  background-attachment: fixed;
     flex-direction: column;
     justify-content: center;
 }
@@ -617,4 +661,120 @@ body {
 #project-links-popup a:hover i {
     color: var(--accent-color);
     transform: scale(1.2); 
+}
+/* --- Contact Form Icon Styling (UPDATED) --- */
+.contact-form .input-group {
+    position: relative;
+    width: 100%;
+    display: flex; /* Arrange icon and input side-by-side */
+    align-items: stretch; /* Make icon and input the same height */
+}
+
+.contact-form .input-group i {
+    /* Style for the icon's "box" */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 15px;
+    background: rgba(var(--panel-rgb), 0.7); /* Glass effect background */
+    border: 2px solid var(--text-secondary);
+    border-right: none; /* Remove border between icon and input */
+    border-radius: 0.5rem 0 0 0.5rem; /* Round the left corners */
+    font-size: 2.2rem;
+    color: var(--accent-color);
+    transition: border-color 0.3s ease;
+}
+
+.contact-form .input-group input,
+.contact-form .input-group textarea {
+    border-radius: 0 0.5rem 0.5rem 0; /* Round the right corners */
+    /* REMOVED padding-left */
+}
+
+/* Adjusts the icon position for the taller textarea */
+.contact-form .input-group textarea ~ i {
+   align-items: flex-start; /* Align icon to the top */
+   padding-top: 1rem;
+}
+
+/* Highlight both the icon and input when the user clicks inside */
+.contact-form .input-group:focus-within i,
+.contact-form .input-group:focus-within input,
+.contact-form .input-group:focus-within textarea {
+    border-color: var(--accent-color);
+}
+/* --- Skill Icon Color Customization --- */
+
+.skill-card .bxl-html5 { color: #E34F26; }
+.skill-card .bxl-css3 { color: #1572B6; }
+.skill-card .bxl-javascript { color: #F7DF1E; }
+.skill-card .bxl-react { color: #61DAFB; }
+.skill-card .bxl-git { color: #F05032; }
+.skill-card .bxl-nodejs { color: #339933; }
+.skill-card .bxl-typescript { color: #3178C6; }
+.skill-card .bxl-tailwind-css { color: #06B6D4; }
+.skill-card .bxl-mongodb { color: #47A248; }
+.skill-card .bx-data { color: #4479A1; } /* For MySQL */
+/* --- Animated Skill Icon Enhancements --- */
+
+/* 1. Define the animation for floating */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+/* 2. Define the animation for spinning (for React) */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 3. Apply the floating animation to all icons on hover */
+.skill-card:hover i {
+  animation: float 2s ease-in-out infinite;
+}
+
+/* 4. Override the float for the React icon and apply the spin animation instead */
+.skill-card:hover .bxl-react {
+  animation: spin 3s linear infinite;
+}
+/* --- 3D Tilt Effect for About Image --- */
+/* --- Hero Image "Aura Pan" Effect --- */
+
+.hero-image-container {
+    border-radius: 10px; /* Match the image's border-radius for the glow */
+    transition: box-shadow 0.5s ease;
+}
+
+/* The glowing 'Aura' on hover */
+.hero-image-container:hover {
+    box-shadow: 0 0 25px cyan;
+transform: rotate(3deg);    /* tilt 10° counter-clockwise */
+  transform-origin: bottom; 
+}
+
+.hero-image-container img {
+    /* Set up transitions for the pan (transform) and grayscale (filter) */
+    transition: transform 0.2s linear, filter 0.5s ease;
+}
+
+/* The grayscale effect on hover */
+.hero-image-container:hover img {
+    filter: grayscale(100%);
+}
+/* --- Text Decode Effect Styling --- */
+.multiple-text {
+    color: var(--accent-color);
+    text-shadow: 0 0 5px var(--accent-color);
 }
