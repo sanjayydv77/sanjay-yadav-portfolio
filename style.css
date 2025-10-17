@@ -23,7 +23,7 @@
 body {
     background-color: var(--background-color);
     color: var(--text-primary);
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 #matrix-canvas {
@@ -45,6 +45,11 @@ body {
     width: 100%;
     top: 0;
     z-index: 1000;
+    background-color: var(--background-color);
+}
+/* Add this to your main stylesheet */
+#menu-icon {
+    display: none;
 }
 
 .logo {
@@ -108,13 +113,12 @@ body {
     gap: 2rem;
     backface-visibility: hidden;
 }
-
-/* --- Positioning for all 5 panels --- */
-.panel-home { transform: rotateY(0deg) translateZ(826px); }
-.panel-about { transform: rotateY(72deg) translateZ(826px); }
-.panel-skills { transform: rotateY(144deg) translateZ(826px); }
-.panel-projects { transform: rotateY(216deg) translateZ(826px); }
-.panel-contact { transform: rotateY(288deg) translateZ(826px); }
+/* --- Positioning for all 5 panels (NOW RESPONSIVE) --- */
+.panel-home { transform: rotateY(0deg) translateZ(62vw); }
+.panel-about { transform: rotateY(72deg) translateZ(62vw); }
+.panel-skills { transform: rotateY(144deg) translateZ(62vw); }
+.panel-projects { transform: rotateY(216deg) translateZ(62vw); }
+.panel-contact { transform: rotateY(288deg) translateZ(62vw); }
 
 
 /* --- Hero Section Styling --- */
@@ -777,4 +781,250 @@ transform: rotate(3deg);    /* tilt 10° counter-clockwise */
 .multiple-text {
     color: var(--accent-color);
     text-shadow: 0 0 5px var(--accent-color);
+}
+/* ==============================================
+   --- PORTFOLIO MEDIA QUERIES ---
+   ============================================== */
+
+/* --- 1. Large Laptops (<= 1200px) --- */
+@media (max-width: 1200px) {
+    .carousel {
+        /* Use viewport-width to make the 3D effect responsive */
+        perspective: 1500px;
+    }
+    .skills-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+
+/* --- 2. Tablets (<= 992px) --- */
+@media (max-width: 992px) {
+    .navbar {
+        padding: 1rem 3%;
+    }
+
+    .carousel {
+        min-height: 700px; /* Give more space for stacked content */
+    }
+
+    .carousel-panel {
+        /* Stack content inside panels */
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        padding: 3rem;
+    }
+
+    /* --- Panel-Specific Stacking --- */
+    .panel-home .hero-image-container {
+        order: -1; /* Move image to the top */
+        margin-bottom: 2rem;
+    }
+    .panel-home .hero-image-container img {
+        max-width: 70%;
+        margin: 0 auto;
+    }
+    .panel-home .hero-content {
+        flex-basis: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .social-media {
+        justify-content: center;
+    }
+
+    .panel-about .about-image {
+        margin-bottom: 2rem;
+    }
+    .panel-about .about-content {
+        flex-basis: auto;
+    }
+
+    .skills-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .contact-form .form-row {
+        grid-template-columns: 1fr; /* Stack form fields */
+    }
+}
+
+
+/* --- 3. Small Tablets & Phones (<= 768px) --- */
+/* This is the most important breakpoint. We flatten the 3D carousel. */
+@media (max-width: 768px) {
+    
+    
+    /* --- Mobile Navbar --- */
+    #menu-icon {
+        display: block;
+        font-size: 3.6rem;
+        cursor: pointer;
+    }
+
+    .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        padding: 1rem 0;
+        background: var(--panel-color);
+        flex-direction: column;
+        align-items: center;
+        
+        /* Hide menu by default */
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s ease-out;
+    }
+
+    .nav-links.active {
+        /* This class is toggled by JavaScript to show the menu */
+        max-height: 350px; 
+        border-bottom: 1px solid var(--accent-color);
+    }
+
+    .nav-links li {
+        margin: 1rem 0;
+    }
+
+    /* --- Flatten the 3D Scene --- */
+    .scene-container {
+        height: auto;
+        perspective: none;
+        padding-top: 75px; /* Offset for fixed navbar */
+    }
+
+    .carousel {
+        width: 90%;
+        height: auto;
+        min-height: unset;
+        transform-style: flat;
+        transform: none;
+    }
+
+    .carousel-panel {
+        position: relative;
+        display: block; /* Change from flex to block */
+        transform: none !important; /* CRITICAL: Overrides JS inline style */
+        opacity: 1 !important;     /* CRITICAL: Overrides JS inline style */
+        backface-visibility: visible;
+        width: 100%;
+        height: auto;
+        padding: 2.5rem 2rem;
+        margin-bottom: 3rem;
+        min-height: unset;
+    }
+
+    .panel-home {
+        /* Make home panel fill the first view */
+        min-height: calc(100vh - 75px);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .heading {
+        font-size: 3.5rem;
+    }
+
+    /* --- Adjust Panels for Vertical Scroll --- */
+    
+    .panel-home .hero-image-container img {
+        max-width: 250px;
+    }
+
+    .skills-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    /* --- Flatten Project Conveyor --- */
+    .panel-projects .projects-conveyor {
+        overflow: visible;
+    }
+    
+    .panel-projects .conveyor-track {
+        animation: none; /* Stop the marquee */
+        flex-direction: column; /* Stack the cards */
+        width: 100%;
+        gap: 2rem;
+    }
+
+    .panel-projects .project-card {
+        width: 100%;
+        max-width: 350px;
+        margin: 0 auto;
+    }
+    /* --- Add these to your (max-width: 768px) media query --- */
+
+/* Hide the hover-based popup on mobile */
+#project-links-popup {
+    display: none !important;
+}
+
+/* Make the links on the back of the card visible on mobile */
+.panel-projects .project-card-back .project-links {
+    visibility: visible;
+    margin-top: 1rem;
+}
+/* --- This is the fix to show your project links on mobile --- */
+
+/* Hides the desktop-only hover popup */
+#project-links-popup {
+    display: none !important;
+}
+
+/* Makes the links on the back of the card VISIBLE */
+.panel-projects .project-card-back .project-links {
+    visibility: visible;
+    margin-top: 1rem; /* Adds a little space */
+    display: flex; /* Ensures they are aligned */
+    justify-content: center;
+    gap: 2rem;
+}
+}
+
+
+/* --- 4. Small Phones (<= 480px) --- */
+@media (max-width: 480px) {
+    .carousel {
+        width: 95%;
+    }
+    
+    .carousel-panel {
+        padding: 2rem 1.5rem;
+    }
+
+    .panel-home .hero-content h1 {
+        font-size: 4rem; /* Clamp() handles this, but good to check */
+    }
+
+    .social-media a {
+        width: 3.8rem;
+        height: 3.8rem;
+        font-size: 1.8rem;
+    }
+
+    .skills-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+
+    .skill-card {
+        padding: 2rem 1rem;
+    }
+    .skill-card i {
+        font-size: 4rem;
+    }
+}
+/* --- 5. Laptops & Desktops (>= 1334px) --- */
+/* This locks the 3D carousel's size to match its max-width */
+@media (min-width: 1334px) {
+    .panel-home { transform: rotateY(0deg) translateZ(826px); }
+    .panel-about { transform: rotateY(72deg) translateZ(826px); }
+    .panel-skills { transform: rotateY(144deg) translateZ(826px); }
+    .panel-projects { transform: rotateY(216deg) translateZ(826px); }
+    .panel-contact { transform: rotateY(288deg) translateZ(826px); }
 }
