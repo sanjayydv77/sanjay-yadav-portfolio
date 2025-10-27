@@ -53,7 +53,7 @@ body {
 }
 
 .logo {
-    font-size: 2.5rem;
+    font-size: 3.5rem;
     font-weight: 700;
     color: var(--accent-color);
     text-decoration: none;
@@ -65,18 +65,22 @@ body {
 }
 
 .nav-links li {
+    margin-top: 2rem;
     margin-left: 2rem;
 }
 
 .nav-links a {
     text-decoration: none;
     color: var(--text-primary);
-    font-size: 1.6rem;
+    font-size: 2rem;
     transition: color 0.3s ease;
 }
 
 .nav-links a:hover {
     color: var(--accent-color);
+}
+.nav-links a:active{
+     color: var(--accent-color);
 }
 
 /* --- 3D Scene & Carousel Setup --- */
@@ -224,9 +228,12 @@ body {
     text-decoration: none;
     transition: all 0.3s ease;
     cursor: pointer;
+    border-radius: 30px;
 }
 .btn:hover {
-    background: rgba(100, 255, 218, 0.1);
+      background: linear-gradient(45 deg,var(--accent-color),var(--accent-color),var(--accent-color));
+box-shadow: 0 0 20px var(--accent-color),0 0 40px var(--accent-color), 0 0 60px var(--accent-color);
+border-radius: 30px;
 }
 .hero-image-container {
     flex-basis: 50%;
